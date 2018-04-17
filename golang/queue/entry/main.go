@@ -11,6 +11,7 @@ func main() {
 
 	q.Push(2)
 	q.Push(3)
+	//q.Push("abc")
 	fmt.Println(q)
 	fmt.Println(q.Pop())
 	fmt.Println(q.Pop())
