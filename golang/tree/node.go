@@ -11,10 +11,10 @@ func CreateNode(no int) *Node {
 	return &Node{No: no}
 }
 
-func (node *Node) print() {
+func (node *Node) Print() {
 	fmt.Print(node.No, " ")
 }
 
-func (node *Node) setNo(no int) {
+func (node *Node) SetNo(no int) {
 	node.No = no
 }

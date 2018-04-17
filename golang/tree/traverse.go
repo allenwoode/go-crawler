@@ -4,10 +4,16 @@ func (node *Node) Traverse()  {
 	if node == nil {
 		return
 	}
-	//node.print()
-	node.Left.Traverse()
-	node.print()
-	node.Right.Traverse()
-	//node.print()
+	node.TraverseFunc(func(node *Node) {
+		node.Print()
+	})
 }
 
+func (node *Node) TraverseFunc(f func(*Node))  {
+	if node == nil {
+		return
+	}
+	node.Left.TraverseFunc(f)
+	f(node)
+	node.Right.TraverseFunc(f)
+}
