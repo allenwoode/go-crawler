@@ -20,6 +20,7 @@ func errWrapper(h appHandler) func(w http.ResponseWriter, r *http.Request) {
 		defer func() {
 			if r := recover(); r != nil {
 				log.Printf("Panic: %v", r)
+				// panic error
 				http.Error(writer,
 					http.StatusText(http.StatusInternalServerError),
 					http.StatusInternalServerError)
@@ -28,9 +29,11 @@ func errWrapper(h appHandler) func(w http.ResponseWriter, r *http.Request) {
 
 		err := h(writer, request)
 
+		// system error
 		if err != nil {
 			log.Printf("error occured: %s", err.Error())
 
+			// user error
 			if uErr, ok := err.(userErr); ok {
 				http.Error(writer,
 					uErr.Message(),
