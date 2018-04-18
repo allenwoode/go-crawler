@@ -2,33 +2,10 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"io"
 	"bufio"
+	"feilin.com/gocourse/golang/functional/fib"
 )
-
-func fibonacci() G {
-	a, b := 0, 1
-	// 闭包
-	return func() int {
-		a, b = b, a + b
-		return a
-	}
-}
-
-type G func() int
-
-// 函数接口实现
-func (g G) Read(p []byte) (n int, err error) {
-	next := g()
-	if next > 1000000000 {
-		return 0, io.EOF
-	}
-	s := fmt.Sprintf("%d ", next)
-
-	// TODO: incorrect if p is not enough
-	return strings.NewReader(s).Read(p)
-}
 
 func printFileContents(reader io.Reader)  {
 	scanner := bufio.NewScanner(reader)
@@ -39,7 +16,7 @@ func printFileContents(reader io.Reader)  {
 }
 
 func main() {
-	f := fibonacci()
+	f := fib.Fibonacci()
 	/*
 	fmt.Println(f()) // 1
 	fmt.Println(f()) // 1
