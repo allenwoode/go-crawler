@@ -2,6 +2,8 @@ package queue
 
 type Queue []interface{}
 
+// Push element into queue
+// 		e.g. Push(123)
 func (q *Queue) Push(v int)  {
 	*q = append(*q, v)
 }
