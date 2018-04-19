@@ -5,7 +5,7 @@ import (
 	"time"
 	"math/rand"
 )
-// Use select to sheduler
+// Use select to schedule
 func worker(id int, c chan int) {
 	for ch := range c {
 		time.Sleep(time.Second)
