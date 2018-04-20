@@ -12,7 +12,7 @@ func main() {
 		go func(i int) {
 			for {
 				a[i]++
-				//fmt.Printf("index of gorutine: %d\n", i)
+				//fmt.Printf("index of goroutine: %d\n", i)
 				runtime.Gosched()
 			}
 		}(i)
