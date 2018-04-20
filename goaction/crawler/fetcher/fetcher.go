@@ -4,35 +4,42 @@ import (
 	"net/http"
 	"golang.org/x/text/transform"
 	"io/ioutil"
-	"io"
 	"golang.org/x/text/encoding"
 	"bufio"
 	"golang.org/x/net/html/charset"
-	"github.com/pkg/errors"
 	"golang.org/x/text/encoding/unicode"
 	"log"
+	"time"
+	"github.com/pkg/errors"
 )
 
+var limiter = time.Tick(100 * time.Millisecond)
+
 func Fetch(url string) ([]byte, error) {
+	<-limiter
+
 	resp, err := http.Get(url)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		//fmt.Println("http request error code:", resp.StatusCode)
-		return nil, errors.New("http request error code:" + string(resp.StatusCode))
+		//log.Printf("Request error: %s", http.StatusText(resp.StatusCode))
+		return nil, errors.Errorf("response status code: %d", resp.StatusCode)
 	}
-	e := determineEncoding(resp.Body)
+
+	b := bufio.NewReader(resp.Body)
+	e := determineEncoding(b)
 	uft8Body := transform.NewReader(resp.Body, e.NewDecoder())
 
 	return ioutil.ReadAll(uft8Body)
 }
 
-func determineEncoding(r io.Reader) encoding.Encoding  {
-	bytes, err := bufio.NewReader(r).Peek(1024)
+func determineEncoding(r *bufio.Reader) encoding.Encoding  {
+	bytes, err := r.Peek(1024)
+	//fmt.Println(string(bytes))
 	if err != nil {
-		log.Printf("Fetcher error: %v", err)
+		log.Printf("Peek error: %v", err)
 		return unicode.UTF8
 	}
 	e, _, _ := charset.DetermineEncoding(bytes, "")

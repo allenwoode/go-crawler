@@ -18,7 +18,14 @@ import (
 func main() {
 	const url = "http://www.zhenai.com/zhenghun"
 
-	engine.Run(engine.Request{
+	//e := engine.ConcurrentEngine{
+	//	Scheduler: &scheduler.SimpleScheduler{},
+	//	WorkerCount: 100,
+	//}
+
+	e := engine.SimpleEngine{}
+
+	e.Run(engine.Request{
 		Url: url,
 		ParserFunc: parser.ParseCityList,
 	})
