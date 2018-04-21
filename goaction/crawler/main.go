@@ -20,7 +20,7 @@ func main() {
 
 	//e := engine.ConcurrentEngine{
 	//	Scheduler: &scheduler.SimpleScheduler{},
-	//	WorkerCount: 100,
+	//	WorkerCount: 10,
 	//}
 
 	e := engine.SimpleEngine{}

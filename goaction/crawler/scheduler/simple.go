@@ -8,16 +8,13 @@ type SimpleScheduler struct {
 }
 
 func (s *SimpleScheduler) ConfigureMasterWorkerChan(req chan engine.Request) {
-	//panic("implement me")
 	s.workerChan = req
 }
 
 func (s *SimpleScheduler) Submit(r engine.Request) {
-	//panic("implement me")
 	//s.workerChan <- r
 	// 避免循环等待
 	go func() {
 		s.workerChan <- r
 	}()
 }
-

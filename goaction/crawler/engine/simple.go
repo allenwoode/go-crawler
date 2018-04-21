@@ -25,7 +25,6 @@ func (e *SimpleEngine) Run(requests ...Request)  {
 		}
 		queue = append(queue, result.Requests...)
 
-
 		for _, item := range result.Items {
 			count++
 			log.Printf("Got item #%d: %v", count, item)
@@ -34,7 +33,7 @@ func (e *SimpleEngine) Run(requests ...Request)  {
 }
 
 // Engine fetcher
-func Worker(r Request) (ParseResult,error) {
+func Worker(r Request) (ParseResult, error) {
 	log.Printf("Fetching %s", r.Url)
 
 	body, err := fetcher.Fetch(r.Url)

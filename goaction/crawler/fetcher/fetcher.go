@@ -22,15 +22,16 @@ func Fetch(url string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
 		//log.Printf("Request error: %s", http.StatusText(resp.StatusCode))
 		return nil, errors.Errorf("response status code: %d", resp.StatusCode)
 	}
 
-	b := bufio.NewReader(resp.Body)
-	e := determineEncoding(b)
-	uft8Body := transform.NewReader(resp.Body, e.NewDecoder())
+	body := bufio.NewReader(resp.Body)
+	e := determineEncoding(body)
+	uft8Body := transform.NewReader(body, e.NewDecoder())
 
 	return ioutil.ReadAll(uft8Body)
 }
