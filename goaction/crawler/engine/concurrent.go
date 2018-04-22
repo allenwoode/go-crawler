@@ -3,7 +3,7 @@ package engine
 type ConcurrentEngine struct {
 	Scheduler   Scheduler
 	WorkerCount int
-	ItemChan    chan interface{}
+	ItemChan    chan Item
 }
 
 type Scheduler interface {
@@ -18,6 +18,7 @@ type ReadyNotifier interface {
 }
 
 func (e *ConcurrentEngine) Run(seeds ...Request) {
+
 	out := make(chan ParseResult)
 
 	// 调度器running
@@ -38,7 +39,6 @@ func (e *ConcurrentEngine) Run(seeds ...Request) {
 	for {
 		result := <-out
 		for _, item := range result.Items {
-			//e.ItemChan <- item
 			go func() {
 				e.ItemChan <- item
 			}()
@@ -69,6 +69,7 @@ func createWorker(in chan Request, out chan ParseResult, ready ReadyNotifier) {
 	}()
 }
 
+// TODO: Redis docker service
 var visitedUrls = make(map[string]bool)
 
 func isDuplicate(url string) bool {

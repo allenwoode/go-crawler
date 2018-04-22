@@ -3,7 +3,6 @@ package parser
 import (
 	"feilin.com/gocourse/goaction/crawler/engine"
 	"regexp"
-	"log"
 )
 
 var (
@@ -11,20 +10,16 @@ var (
 	cityUrlRe = regexp.MustCompile(`(http://www.zhenai.com/zhenghun/[^"]+)`)
 )
 
-func ParseCity(contents []byte) engine.ParseResult {
+func ParseCity(contents []byte, _ string) engine.ParseResult {
 	//re := regexp.MustCompile(cityRegex)
-	matches := profileRe.FindAllSubmatch(contents, -1)
-
 	results := engine.ParseResult{}
+
+	matches := profileRe.FindAllSubmatch(contents, -1)
 	for _, m := range matches {
-		name := string(m[2])
-		url := string(m[1])
 		//results.Items = append(results.Items, name)
 		results.Requests = append(results.Requests, engine.Request{
-			Url: url,
-			ParserFunc: func(c []byte) engine.ParseResult {
-				return ParseProfile(c, name, url)
-			},
+			Url: string(m[1]),
+			ParserFunc: ProfileParser(string(m[2])),
 		})
 	}
 
@@ -37,7 +32,7 @@ func ParseCity(contents []byte) engine.ParseResult {
 			Url: url,
 			ParserFunc: ParseCity,
 		})
-		log.Printf("other city url:%s", url)
+		//log.Printf("other city url:%s", url)
 	}
 
 	return results

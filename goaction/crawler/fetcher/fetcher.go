@@ -13,7 +13,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-var limiter = time.Tick(100 * time.Millisecond)
+var limiter = time.Tick(50 * time.Millisecond)
 
 func Fetch(url string) ([]byte, error) {
 	<-limiter
@@ -27,7 +27,7 @@ func Fetch(url string) ([]byte, error) {
 
 	if resp.StatusCode != http.StatusOK {
 		//log.Printf("Request error: %s", http.StatusText(resp.StatusCode))
-		return nil, errors.Errorf("%d", resp.StatusCode)
+		return nil, errors.Errorf("%d:", resp.StatusCode)
 	}
 
 	body := bufio.NewReader(resp.Body)
@@ -44,6 +44,7 @@ func determineEncoding(r *bufio.Reader) encoding.Encoding  {
 		log.Printf("Peek error: %v", err)
 		return unicode.UTF8
 	}
+
 	e, _, _ := charset.DetermineEncoding(bytes, "")
 
 	return e

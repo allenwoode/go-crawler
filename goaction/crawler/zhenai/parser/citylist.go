@@ -15,12 +15,12 @@ import (
 	1. css选择器 e.g. $('#cityList>dd>a') get all a dom
 	2. xpath
 	3. regex - 通用性更好
- */
+*/
 
- var cityListRe  = regexp.MustCompile(`<a href="(http://www.zhenai.com/zhenghun/[0-9a-z]+)"[^>]*>([^<]+)</a>`)
+var cityListRe  = regexp.MustCompile(`<a href="(http://www.zhenai.com/zhenghun/[0-9a-z]+)"[^>]*>([^<]+)</a>`)
 //const cityListRegex  = `<a href="(http://www.zhenai.com/zhenghun/[0-9a-z]+)"[^>]*>([^<]+)</a>`
 
-func ParseCityList(contents []byte) engine.ParseResult {
+func ParseCityList(contents []byte, _ string) engine.ParseResult {
 	results := engine.ParseResult{}
 
 	matches := cityListRe.FindAllSubmatch(contents, -1)
