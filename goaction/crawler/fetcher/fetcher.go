@@ -19,6 +19,7 @@ func Fetch(url string) ([]byte, error) {
 	<-limiter
 
 	resp, err := http.Get(url)
+
 	if err != nil {
 		return nil, err
 	}
@@ -26,7 +27,7 @@ func Fetch(url string) ([]byte, error) {
 
 	if resp.StatusCode != http.StatusOK {
 		//log.Printf("Request error: %s", http.StatusText(resp.StatusCode))
-		return nil, errors.Errorf("response status code: %d", resp.StatusCode)
+		return nil, errors.Errorf("%d", resp.StatusCode)
 	}
 
 	body := bufio.NewReader(resp.Body)
