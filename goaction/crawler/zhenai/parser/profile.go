@@ -82,7 +82,7 @@ func ParseProfile(contents []byte, name string, url string) engine.ParseResult {
 	for _, m := range matches {
 		name := string(m[2])
 		url := string(m[1])
-		results.Items = append(results.Items, name)
+		//results.Items = append(results.Items, name)
 		results.Requests = append(results.Requests, engine.Request{
 			Url: url,
 			ParserFunc: func(c []byte) engine.ParseResult {

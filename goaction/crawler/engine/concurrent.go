@@ -1,17 +1,13 @@
 package engine
 
-import (
-	"log"
-	"feilin.com/gocourse/goaction/crawler/model"
-)
-
 type ConcurrentEngine struct {
 	Scheduler   Scheduler
 	WorkerCount int
+	ItemChan    chan interface{}
 }
 
 type Scheduler interface {
-	ReadyNotifier 		//接口组合
+	ReadyNotifier //接口组合
 	Submit(Request)
 	WorkerChan() chan Request
 	Run()
@@ -33,26 +29,25 @@ func (e *ConcurrentEngine) Run(seeds ...Request) {
 
 	for _, r := range seeds {
 		if isDuplicate(r.Url) {
-			log.Printf("Duplicate url: %s", r.Url)
+			//log.Printf("Duplicate url: %s", r.Url)
 			continue
 		}
 		e.Scheduler.Submit(r)
 	}
 
-	count := 0
 	for {
 		result := <-out
 		for _, item := range result.Items {
-			if _, ok := item.(model.Profile); ok {
-				count++
-				log.Printf("Got profile #%d: %v", count, item)
-			}
+			//e.ItemChan <- item
+			go func() {
+				e.ItemChan <- item
+			}()
 		}
 
 		// URL去重 哈希表方式
 		for _, r := range result.Requests {
 			if isDuplicate(r.Url) {
-				log.Printf("Duplicate url: %s", r.Url)
+				//log.Printf("Duplicate url: %s", r.Url)
 				continue
 			}
 			e.Scheduler.Submit(r)

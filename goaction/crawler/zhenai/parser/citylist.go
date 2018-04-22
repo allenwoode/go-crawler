@@ -17,17 +17,15 @@ import (
 	3. regex - 通用性更好
  */
 
-const cityListRegex  = `<a href="(http://www.zhenai.com/zhenghun/[0-9a-z]+)"[^>]*>([^<]+)</a>`
+ var cityListRe  = regexp.MustCompile(`<a href="(http://www.zhenai.com/zhenghun/[0-9a-z]+)"[^>]*>([^<]+)</a>`)
+//const cityListRegex  = `<a href="(http://www.zhenai.com/zhenghun/[0-9a-z]+)"[^>]*>([^<]+)</a>`
 
 func ParseCityList(contents []byte) engine.ParseResult {
-	re := regexp.MustCompile(cityListRegex)
-	matches := re.FindAllSubmatch(contents, -1)
-
 	results := engine.ParseResult{}
 
-	choosed := matches[:10]
-	for _, m := range choosed {
-		results.Items = append(results.Items, string(m[2]))
+	matches := cityListRe.FindAllSubmatch(contents, -1)
+	for _, m := range matches {
+		//results.Items = append(results.Items, string(m[2]))
 		results.Requests = append(results.Requests, engine.Request{
 			Url: string(m[1]),
 			ParserFunc: ParseCity,
