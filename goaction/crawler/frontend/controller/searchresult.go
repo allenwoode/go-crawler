@@ -57,12 +57,13 @@ func (h SearchResultHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func (h SearchResultHandler) getSearchResult(q string, from int) (model.SearchResult, error) {
 	var result model.SearchResult
 	resp, err := h.client.Search("dating_profile").
-		Query(elastic.NewQueryStringQuery(formatQueryString(q))).From(from).Do(context.Background())
+							Query(elastic.NewQueryStringQuery(formatQueryString(q))).
+							From(from).
+							Do(context.Background())
 
 	if err != nil {
 		return result, err
 	}
-	//log.Printf("resp %v", resp.Profile)
 
 	result.Query = q
 	result.Hits = resp.TotalHits()
