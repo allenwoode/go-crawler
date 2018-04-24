@@ -19,7 +19,7 @@ func ParseCity(contents []byte, _ string) engine.ParseResult {
 		//results.Items = append(results.Items, name)
 		results.Requests = append(results.Requests, engine.Request{
 			Url: string(m[1]),
-			ParserFunc: ProfileParser(string(m[2])),
+			Parser: NewProfileParser(string(m[2])),
 		})
 	}
 
@@ -30,7 +30,7 @@ func ParseCity(contents []byte, _ string) engine.ParseResult {
 		//results.Items = append(results.Items, name)
 		results.Requests = append(results.Requests, engine.Request{
 			Url: url,
-			ParserFunc: ParseCity,
+			Parser: engine.NewFuncParser(ParseCity, "ParseCity"),
 		})
 		//log.Printf("other city url:%s", url)
 	}

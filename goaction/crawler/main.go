@@ -9,7 +9,6 @@ import (
 )
 
 func main() {
-	const url = "http://www.zhenai.com/zhenghun"
 	itemChan, err := persist.ItemSaver("dating_profile")
 	if err != nil {
 		panic(err)
@@ -22,9 +21,10 @@ func main() {
 	}
 
 	//e := engine.SimpleEngine{}
-	log.Printf("crawler start %s", url)
+	const url = "http://www.zhenai.com/zhenghun"
+	log.Printf("concurrent crawler start at %s", url)
 	e.Run(engine.Request{
 		Url:        url,
-		ParserFunc: parser.ParseCityList,
+		Parser: engine.NewFuncParser(parser.ParseCityList, "ParseCityList"),
 	})
 }
