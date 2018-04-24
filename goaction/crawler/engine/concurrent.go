@@ -8,6 +8,7 @@ type ConcurrentEngine struct {
 
 type Scheduler interface {
 	ReadyNotifier //接口组合
+
 	Submit(Request)
 	WorkerChan() chan Request
 	Run()
@@ -18,10 +19,8 @@ type ReadyNotifier interface {
 }
 
 func (e *ConcurrentEngine) Run(seeds ...Request) {
-
 	out := make(chan ParseResult)
 
-	// 调度器running
 	e.Scheduler.Run()
 
 	for i := 0; i < e.WorkerCount; i++ {
@@ -44,7 +43,7 @@ func (e *ConcurrentEngine) Run(seeds ...Request) {
 			}()
 		}
 
-		// URL去重 哈希表方式
+		// URL去重 内存哈希表方式
 		for _, r := range result.Requests {
 			if isDuplicate(r.Url) {
 				//log.Printf("Duplicate url: %s", r.Url)
@@ -59,6 +58,7 @@ func createWorker(in chan Request, out chan ParseResult, ready ReadyNotifier) {
 	go func() {
 		for {
 			ready.WorkerReady(in)
+
 			request := <-in
 			result, err := Worker(request)
 			if err != nil {
@@ -69,7 +69,6 @@ func createWorker(in chan Request, out chan ParseResult, ready ReadyNotifier) {
 	}()
 }
 
-// TODO: Redis docker service
 var visitedUrls = make(map[string]bool)
 
 func isDuplicate(url string) bool {

@@ -5,7 +5,6 @@ import (
 	"feilin.com/gocourse/goaction/crawler/fetcher"
 )
 
-// Engine fetcher
 func Worker(r Request) (ParseResult, error) {
 	//log.Printf("Fetching %s", r.Url)
 
@@ -14,7 +13,7 @@ func Worker(r Request) (ParseResult, error) {
 	//////////////////////////////////
 
 	if err != nil {
-		log.Printf("Error: %v Url: %s", err, r.Url)
+		log.Printf("Fetching error: %v. Url: %s", err, r.Url)
 		return ParseResult{}, err
 	}
 

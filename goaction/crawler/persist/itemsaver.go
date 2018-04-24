@@ -22,7 +22,7 @@ func ItemSaver(index string) (chan engine.Item, error) {
 			log.Printf("ItemSaver: #%d, %v", count, item)
 			count++
 
-			err := save(client, index, item)
+			err := Save(client, index, item)
 			if err != nil {
 				log.Printf("Save error: %v", err)
 				continue
@@ -32,17 +32,16 @@ func ItemSaver(index string) (chan engine.Item, error) {
 	return out, nil
 }
 
-func save(client *elastic.Client, index string, item engine.Item) error {
-	//client, err := elastic.NewClient(elastic.SetSniff(false))
-
+func Save(client *elastic.Client, index string, item engine.Item) error {
 	if item.Type == "" {
-		return errors.New("")
+		return errors.New("elasticsearch need a type")
 	}
 
 	service := client.Index().
 		Index(index).
-		Type("zhenai").
+		Type(item.Type).
 		BodyJson(item)
+
 	if item.Id != "" {
 		service.Id(item.Id)
 	}

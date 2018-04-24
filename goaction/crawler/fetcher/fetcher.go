@@ -13,11 +13,12 @@ import (
 	"github.com/pkg/errors"
 )
 
-var limiter = time.Tick(50 * time.Millisecond)
+var limiter = time.Tick(100 * time.Millisecond)
 
 func Fetch(url string) ([]byte, error) {
 	<-limiter
 
+	// TODO: 模拟登陆
 	resp, err := http.Get(url)
 
 	if err != nil {

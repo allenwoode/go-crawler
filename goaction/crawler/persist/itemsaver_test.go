@@ -35,23 +35,21 @@ func TestSaver(t *testing.T) {
 		panic(err)
 	}
 
-	err = save(client, "test", expected)
+	err = Save(client, "dating_test", expected)
 	if err != nil {
 		t.Errorf("%v", err)
 		panic(err)
 	}
 
-	// TODO: Try to start up elastic search client
+	// TODO: Try to start up elasticsearch use a client
 	resp, err := client.Get().
-		Index("test").
+		Index("dating_test").
 		Type(expected.Type).
 		Id(expected.Id).
 		Do(context.Background())
 	if err != nil {
 		panic(err)
 	}
-
-	//t.Logf("%s\n", *resp.Source)
 
 	var actual engine.Item
 	err = json.Unmarshal(*resp.Source, &actual)
