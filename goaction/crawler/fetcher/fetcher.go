@@ -28,7 +28,7 @@ func Fetch(url string) ([]byte, error) {
 
 	if resp.StatusCode != http.StatusOK {
 		//log.Printf("Request error: %s", http.StatusText(resp.StatusCode))
-		return nil, errors.Errorf("%d:", resp.StatusCode)
+		return nil, errors.Errorf("status code %d", resp.StatusCode)
 	}
 
 	body := bufio.NewReader(resp.Body)

@@ -5,29 +5,35 @@ import (
 	"feilin.com/gocourse/goaction/crawler/zhenai/parser"
 	"feilin.com/gocourse/goaction/crawler/scheduler"
 	"log"
-	"feilin.com/gocourse/goaction/crawler_distribute/itemsaver"
+	itemsaver "feilin.com/gocourse/goaction/crawler_distribute/itemsaver"
 	"fmt"
 	"feilin.com/gocourse/goaction/crawler_distribute/config"
+	worker "feilin.com/gocourse/goaction/crawler_distribute/worker/client"
 )
 
 func main() {
-	itemChan, err := client.ItemSaver(fmt.Sprintf(":%d", config.ItemSaverPort))
+	itemChan, err := itemsaver.ItemSaver(fmt.Sprintf(":%d", config.ItemSaverPort))
 	if err != nil {
 		panic(err)
 	}
 
+	processor, err := worker.CreateProcessor()
+	if err != nil {
+		panic(err)
+	}
 	e := engine.ConcurrentEngine{
 		Scheduler:   &scheduler.QueuedScheduler{},
 		WorkerCount: 100,
 		ItemChan:    itemChan,
+		ReqProcessor: processor,
 	}
 
 	//e := engine.SimpleEngine{}
 
 	const url = "http://www.zhenai.com/zhenghun"
-	log.Printf("distribute crawler start at %s", url)
+	log.Printf("distributed crawler start at %s", url)
 	e.Run(engine.Request{
 		Url:    url,
-		Parser: engine.NewFuncParser(parser.ParseCityList, "ParseCityList"),
+		Parser: engine.NewFuncParser(parser.ParseCityList, config.ParseCityList),
 	})
 }

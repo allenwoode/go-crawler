@@ -21,7 +21,7 @@ func ItemSaver(host string) (chan engine.Item, error) {
 		count := 0
 		for {
 			item := <-out
-			log.Printf("ItemSaver: #%d, %v", count, item)
+			log.Printf("Got item: #%d, %+v", count, item)
 			count++
 
 			err := Save(client, item)

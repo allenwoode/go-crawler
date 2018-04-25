@@ -3,6 +3,7 @@ package parser
 import (
 	"feilin.com/gocourse/goaction/crawler/engine"
 	"regexp"
+	"feilin.com/gocourse/goaction/crawler_distribute/config"
 )
 
 /* 解析器抽象
@@ -28,7 +29,7 @@ func ParseCityList(contents []byte, _ string) engine.ParseResult {
 		//results.Items = append(results.Items, string(m[2]))
 		results.Requests = append(results.Requests, engine.Request{
 			Url: string(m[1]),
-			Parser: engine.NewFuncParser(ParseCity, "ParseCity"),
+			Parser: engine.NewFuncParser(ParseCity, config.ParseCity),
 		})
 	}
 

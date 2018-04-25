@@ -15,10 +15,10 @@ type SaverService struct {
 func (s *SaverService) Save(item engine.Item, result *string) error {
 	err := persist.Save(s.Client, s.Index, item)
 	if err == nil {
-		log.Printf("SaverSevice item: %v", item)
+		log.Printf("SaverService item: %v", item)
 		*result = "ok"
 	} else {
-		log.Printf("SaverSevice error: %v", err)
+		log.Printf("SaverService error: %v", err)
 	}
 
 	return err
