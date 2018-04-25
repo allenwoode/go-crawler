@@ -11,9 +11,10 @@ import (
 	"log"
 	"time"
 	"github.com/pkg/errors"
+	"feilin.com/gocourse/goaction/crawler_distribute/config"
 )
 
-var limiter = time.Tick(100 * time.Millisecond)
+var limiter = time.Tick(time.Second / config.Qps)
 
 func Fetch(url string) ([]byte, error) {
 	<-limiter

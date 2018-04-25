@@ -5,6 +5,7 @@ import (
 	"net"
 	"log"
 	"net/rpc/jsonrpc"
+	"fmt"
 )
 
 func ServeRpc(host string, service interface{}) error {
@@ -14,7 +15,7 @@ func ServeRpc(host string, service interface{}) error {
 	if err != nil {
 		return err
 	}
-
+	fmt.Printf("Listening on %s...\n", host)
 	for {
 		conn, err := listener.Accept()
 		if err != nil {

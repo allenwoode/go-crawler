@@ -7,6 +7,7 @@ import (
 	"log"
 	"fmt"
 	"feilin.com/gocourse/goaction/crawler_distribute/config"
+	"flag"
 )
 
 func server(host string, index string) error {
@@ -21,7 +22,14 @@ func server(host string, index string) error {
 	})
 }
 
-func main() {
+var port = flag.Int("port", 0, "the port for me to listen on")
+
+func main()  {
+	flag.Parse()
+	if *port == 0 {
+		fmt.Println("must specify a port")
+		return
+	}
 	// saver rpc service configure host and index
-	log.Fatal(server(fmt.Sprintf(":%d", config.ItemSaverPort), config.ElasticIndex))
+	log.Fatal(server(fmt.Sprintf(":%d", *port), config.ElasticIndex))
 }
