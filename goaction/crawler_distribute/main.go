@@ -6,7 +6,6 @@ import (
 	"feilin.com/gocourse/goaction/crawler/scheduler"
 	"log"
 	itemsaver "feilin.com/gocourse/goaction/crawler_distribute/itemsaver"
-	"fmt"
 	"feilin.com/gocourse/goaction/crawler_distribute/config"
 	worker "feilin.com/gocourse/goaction/crawler_distribute/worker/client"
 	"flag"
@@ -23,7 +22,7 @@ var (
 func main()  {
 	flag.Parse()
 
-	itemChan, err := itemsaver.ItemSaver(fmt.Sprintf(":%d", config.ItemSaverPort))
+	itemChan, err := itemsaver.ItemSaver(*saverHost)
 	if err != nil {
 		panic(err)
 	}
