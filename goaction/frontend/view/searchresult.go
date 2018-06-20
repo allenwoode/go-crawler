@@ -3,7 +3,7 @@ package view
 import (
 	"html/template"
 	"io"
-	"feilin.com/gocourse/goaction/crawler/frontend/model"
+	"feilin.com/gocourse/goaction/frontend/model"
 )
 
 type SearchResultView struct {

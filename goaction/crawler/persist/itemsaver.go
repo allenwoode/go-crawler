@@ -9,7 +9,8 @@ import (
 )
 
 func ItemSaver(index string) (chan engine.Item, error) {
-	client, err := elastic.NewClient(elastic.SetSniff(false))
+	client, err := elastic.NewClient(elastic.SetURL("http://127.0.0.1:9200"),
+		elastic.SetSniff(false))
 	if err != nil {
 		return nil, err
 	}

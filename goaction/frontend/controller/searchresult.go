@@ -1,12 +1,12 @@
 package controller
 
 import (
-	"feilin.com/gocourse/goaction/crawler/frontend/view"
+	"feilin.com/gocourse/goaction/frontend/view"
 	"gopkg.in/olivere/elastic.v5"
 	"net/http"
 	"strings"
 	"strconv"
-	"feilin.com/gocourse/goaction/crawler/frontend/model"
+	"feilin.com/gocourse/goaction/frontend/model"
 	"context"
 	"reflect"
 	"feilin.com/gocourse/goaction/crawler/engine"

@@ -2,7 +2,7 @@ package view
 
 import (
 	"testing"
-	"feilin.com/gocourse/goaction/crawler/frontend/model"
+	"feilin.com/gocourse/goaction/frontend/model"
 	common "feilin.com/gocourse/goaction/crawler/model"
 	"os"
 	"feilin.com/gocourse/goaction/crawler/engine"
