@@ -42,7 +42,7 @@ func main()  {
 	//e := engine.SimpleEngine{}
 
 	const url = "http://www.zhenai.com/zhenghun"
-	log.Printf("distributed crawler start at %s", url)
+	log.Printf("distributed crawler start at %s...", url)
 	e.Run(engine.Request{
 		Url:    url,
 		Parser: engine.NewFuncParser(parser.ParseCityList, config.ParseCityList),

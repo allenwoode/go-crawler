@@ -1,7 +1,10 @@
 package engine
 
-import "fmt"
+import (
+	//"fmt"
+)
 
+// 并发爬虫引擎
 type ConcurrentEngine struct {
 	Scheduler   Scheduler
 	WorkerCount int
@@ -24,7 +27,7 @@ type ReadyNotifier interface {
 }
 
 func (e *ConcurrentEngine) Run(seeds ...Request) {
-	fmt.Println("concurrent engine running...")
+	//fmt.Println("concurrent engine running...")
 
 	out := make(chan ParseResult)
 
@@ -67,7 +70,7 @@ func (e *ConcurrentEngine) createWorker(in chan Request, out chan ParseResult, r
 			ready.WorkerReady(in)
 
 			request := <-in
-			result, err := e.ReqProcessor(request)
+			result, err := e.ReqProcessor(request) //worker
 			if err != nil {
 				continue
 			}

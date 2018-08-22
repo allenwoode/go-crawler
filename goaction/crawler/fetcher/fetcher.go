@@ -11,7 +11,7 @@ import (
 	"log"
 	"time"
 	"github.com/pkg/errors"
-	"feilin.com/gocourse/goaction/crawler_distribute/config"
+	"feilin.com/gocourse/goaction/crawler/config"
 )
 
 var limiter = time.Tick(time.Second / config.Qps)
