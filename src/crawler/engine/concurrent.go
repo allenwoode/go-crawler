@@ -23,8 +23,6 @@ type ReadyNotifier interface {
 }
 
 func (e *ConcurrentEngine) Run(seeds ...Request) {
-	//fmt.Println("concurrent engine running...")
-
 	out := make(chan ParseResult)
 
 	e.Scheduler.Run()

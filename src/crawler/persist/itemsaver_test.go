@@ -2,11 +2,11 @@ package persist
 
 import (
 	"testing"
-	"feilin.com/gocourse/goaction/crawler/model"
+	"crawler/model"
 	"gopkg.in/olivere/elastic.v5"
 	"context"
 	"encoding/json"
-	"feilin.com/gocourse/goaction/crawler/engine"
+	"crawler/engine"
 )
 
 func TestSaver(t *testing.T) {

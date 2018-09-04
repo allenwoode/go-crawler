@@ -19,9 +19,9 @@ func (s *QueuedScheduler) WorkerReady(w chan engine.Request) {
 	s.workerChan <- w
 }
 
-func (s *QueuedScheduler) Run() {
-	s.requestChan = make(chan engine.Request)
-	s.workerChan = make(chan chan engine.Request)
+func (q *QueuedScheduler) Run() {
+	q.requestChan = make(chan engine.Request)
+	q.workerChan = make(chan chan engine.Request)
 	go func() {
 		var requestQ []engine.Request
 		var workerQ []chan engine.Request
@@ -34,9 +34,9 @@ func (s *QueuedScheduler) Run() {
 			}
 			// 并发执行
 			select {
-			case r := <-s.requestChan:
+			case r := <-q.requestChan:
 				requestQ = append(requestQ, r)
-			case w := <-s.workerChan:
+			case w := <-q.workerChan:
 				workerQ = append(workerQ, w)
 			case activeWorker <- activeRequest:
 				workerQ = workerQ[1:]
