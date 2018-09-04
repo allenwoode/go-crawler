@@ -6,6 +6,8 @@ import (
 	"crawler/scheduler"
 	"crawler/zhenai/parser"
 	"log"
+	"github.com/go-redis/redis"
+	"crawler/config"
 )
 
 func main() {
@@ -14,12 +16,19 @@ func main() {
 		panic(err)
 	}
 
+
+
 	e := engine.ConcurrentEngine {
 		Scheduler: &scheduler.QueuedScheduler{},
 		//Scheduler:		&scheduler.SimpleScheduler{},
 		WorkerCount:  100,
 		ItemChan:     itemChan,
 		ReqProcessor: engine.Worker,
+		RedisClient: redis.NewClient(&redis.Options{
+			Addr: config.RedisHost,
+			Password: config.RedisPassword,
+			DB: config.RedisDB,
+		}),
 	}
 
 	//e, simple := engine.SimpleEngine{}, true

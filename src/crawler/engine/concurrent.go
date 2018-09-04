@@ -1,11 +1,19 @@
 package engine
 
+import (
+	"github.com/go-redis/redis"
+	"crawler/util"
+	"strings"
+	"github.com/uber/tchannel-go/crossdock/log"
+)
+
 // 并发爬虫引擎
 type ConcurrentEngine struct {
 	Scheduler    Scheduler
 	WorkerCount  int
 	ItemChan     chan Item
 	ReqProcessor Processor
+	RedisClient	*redis.Client
 }
 
 type Processor func(Request) (ParseResult, error)
@@ -49,10 +57,11 @@ func (e *ConcurrentEngine) Run(seeds ...Request) {
 
 		// URL去重 内存哈希表方式
 		for _, r := range result.Requests {
-			if isDuplicate(r.Url) {
-				//log.Printf("Duplicate url: %s", r.Url)
+			if e.dup(r.Url) {
+				log.Printf("Duplicate url: %s", r.Url)
 				continue
 			}
+			log.Printf("submit url: %s", r.Url)
 			e.Scheduler.Submit(r)
 		}
 	}
@@ -80,4 +89,17 @@ func isDuplicate(url string) bool {
 		return true
 	}
 	return false
+}
+
+func (e *ConcurrentEngine) dup(url string) bool {
+	key := util.GetMD5Hash(url)
+	val, err := e.RedisClient.Get(key).Result()
+	if err != nil {
+		log.Printf("set %s to redis", url)
+		err = e.RedisClient.Set(key, url, 0).Err()
+		if err != nil {
+			panic(err)
+		}
+	}
+	return strings.EqualFold(val, url)
 }
